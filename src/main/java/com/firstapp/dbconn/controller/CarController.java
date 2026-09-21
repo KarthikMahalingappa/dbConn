@@ -27,12 +27,8 @@ public class CarController {
     }
 
     @PostMapping("/takeOrder")
-    Response processOrder(@RequestBody AllProductRequest allProductRequest) {
-        for (ProductRequest pr : allProductRequest.getAllProducts()) {
-            System.out.println("productid:" + pr.getProductId());
-            System.out.println("Quantity:" + pr.getQuantity());
-        }
-        return null;
+    AllProductResponse processOrder(@RequestBody AllProductRequest allProductRequest) {
+        return productService.processOrder(allProductRequest);
     }
 
     @PostMapping("/addProduct")
