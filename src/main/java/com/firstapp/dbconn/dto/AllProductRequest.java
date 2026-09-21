@@ -1,10 +1,9 @@
 package com.firstapp.dbconn.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AllProductRequest {
-
+    List<ProductRequest> allProducts;
 
     public List<ProductRequest> getAllProducts() {
         return allProducts;
@@ -13,7 +12,4 @@ public class AllProductRequest {
     public void setAllProducts(List<ProductRequest> allProducts) {
         this.allProducts = allProducts;
     }
-
-    List<ProductRequest> allProducts;
-
 }

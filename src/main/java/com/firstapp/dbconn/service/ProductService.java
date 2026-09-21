@@ -7,11 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
-
     @Autowired
     ProductsRepo repo;
 
-    public Products addProduct(Products products){
-      return repo.save(products);
+    public Products addProduct(Products products) {
+        return repo.save(products);
     }
 }

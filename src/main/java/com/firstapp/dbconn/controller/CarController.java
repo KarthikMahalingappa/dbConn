@@ -11,36 +11,32 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class CarController {
-
     @Autowired
     CarService carService;
+    @Autowired
+    ProductService productService;
 
     @PostMapping("/add")
-    Car addCar(@RequestBody Car car){
+    Car addCar(@RequestBody Car car) {
         return carService.addCar(car);
     }
 
     @GetMapping("/fetch/{id}")
-    Car getCar(@PathVariable int id){
+    Car getCar(@PathVariable int id) {
         return carService.getCar(id);
     }
 
     @PostMapping("/takeOrder")
-    Response processOrder(@RequestBody AllProductRequest allProductRequest){
-
-                for(ProductRequest pr:allProductRequest.getAllProducts()) {
-                    System.out.println("productid:"+pr.getProductId());
-                    System.out.println("Quantity:"+pr.getQuantity());
-                }
-
+    Response processOrder(@RequestBody AllProductRequest allProductRequest) {
+        for (ProductRequest pr : allProductRequest.getAllProducts()) {
+            System.out.println("productid:" + pr.getProductId());
+            System.out.println("Quantity:" + pr.getQuantity());
+        }
         return null;
     }
 
-    @Autowired
-    ProductService productService;
-
     @PostMapping("/addProduct")
-    Products addProduct(@RequestBody Products products){
+    Products addProduct(@RequestBody Products products) {
         return productService.addProduct(products);
     }
 
