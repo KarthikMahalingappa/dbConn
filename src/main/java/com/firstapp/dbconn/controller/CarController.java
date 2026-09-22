@@ -6,6 +6,8 @@ import com.firstapp.dbconn.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,6 +16,9 @@ public class CarController {
 
     @Autowired
     CarService carService;
+
+    @Autowired
+    ProductService productService;
 
     @PostMapping("/add")
     Car addCar(@RequestBody Car car){
@@ -26,18 +31,20 @@ public class CarController {
     }
 
     @PostMapping("/takeOrder")
-    Response processOrder(@RequestBody AllProductRequest allProductRequest){
-
-                for(ProductRequest pr:allProductRequest.getAllProducts()) {
-                    System.out.println("productid:"+pr.getProductId());
-                    System.out.println("Quantity:"+pr.getQuantity());
-                }
-
-        return null;
+    ResponseBill processOrder(@RequestBody AllProductRequest allProductRequest){
+        List<Response> r = new ArrayList<>();
+        int bill = 0;
+        for(ProductRequest pr:allProductRequest.getAllProducts()) {
+            Products prod = productService.getProduct(pr.getProductId());
+            r.add(new Response(prod.getPrice() * pr.getQuantity(),prod.getName(), prod.getPrice(),pr.getQuantity()));
+            bill += prod.getPrice() * pr.getQuantity();
+            System.out.println("productid:"+pr.getProductId());
+            System.out.println("Quantity:"+pr.getQuantity());
+        }
+        ResponseBill rb = new ResponseBill(r, bill);
+        return rb;
     }
 
-    @Autowired
-    ProductService productService;
 
     @PostMapping("/addProduct")
     Products addProduct(@RequestBody Products products){
