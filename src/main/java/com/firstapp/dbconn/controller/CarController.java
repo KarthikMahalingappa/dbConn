@@ -6,8 +6,6 @@ import com.firstapp.dbconn.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api")
 public class CarController {
@@ -26,14 +24,15 @@ public class CarController {
     }
 
     @PostMapping("/takeOrder")
-    Response processOrder(@RequestBody AllProductRequest allProductRequest){
+    OrderResponse processOrder(@RequestBody OrderRequest orderRequest){
+        return productService.processOrder(orderRequest);
 
-                for(ProductRequest pr:allProductRequest.getAllProducts()) {
-                    System.out.println("productid:"+pr.getProductId());
-                    System.out.println("Quantity:"+pr.getQuantity());
-                }
-
-        return null;
+//                for(OrderItemRequest pr: orderRequest.getAllProducts()) {
+//                    System.out.println("productid:"+pr.getProductId());
+//                    System.out.println("Quantity:"+pr.getQuantity());
+//                }
+//
+//        return null;
     }
 
     @Autowired
