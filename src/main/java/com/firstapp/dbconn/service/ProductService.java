@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -18,24 +19,34 @@ public class ProductService {
 
     public AllProductResponse processOrder(AllProductRequest allProductRequest) {
         List<ProductRequest> list = allProductRequest.getAllProducts();
+
+        if (list == null || list.isEmpty()) {
+            throw new IllegalArgumentException("Product list cannot be empty.");
+        }
+
         AllProductResponse allProductResponse = new AllProductResponse();
         int totalBill = 0;
 
         for (ProductRequest productRequest : list) {
             int id = productRequest.getProductId();
             int quantity = productRequest.getQuantity();
-
-            Products products = repo.findById(id).orElse(null);
-            if (products != null) {
-                String name = products.getName();
-                int price = products.getPrice();
-                int bill = price * quantity;
-                totalBill += bill;
-                ProductResponse productResponse = new ProductResponse(id, name, price, quantity, bill);
-                allProductResponse.getAllProducts().add(productResponse);
-                allProductResponse.setTotalBill(totalBill);
+            if (quantity <= 0) {
+                throw new IllegalArgumentException("Quantity must be greater than 0." + id);
             }
+
+            Optional<Products> products = repo.findById(id);
+            if (products.isEmpty()) {
+                throw new IllegalArgumentException("Product with ID: " + id + " not found.");
+            }
+
+            String name = products.get().getName();
+            int price = products.get().getPrice();
+            int bill = price * quantity;
+            totalBill += bill;
+            ProductResponse productResponse = new ProductResponse(id, name, price, quantity, bill);
+            allProductResponse.getAllProducts().add(productResponse);
         }
+        allProductResponse.setTotalBill(totalBill);
 
         return allProductResponse;
     }

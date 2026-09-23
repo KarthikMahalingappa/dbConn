@@ -4,6 +4,8 @@ import com.firstapp.dbconn.dto.*;
 import com.firstapp.dbconn.service.CarService;
 import com.firstapp.dbconn.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -17,23 +19,27 @@ public class CarController {
     ProductService productService;
 
     @PostMapping("/add")
-    Car addCar(@RequestBody Car car) {
-        return carService.addCar(car);
+    public ResponseEntity<Car> addCar(@RequestBody Car car) {
+        Car savedCar = carService.addCar(car);
+        return new ResponseEntity<>(savedCar, HttpStatus.CREATED);
     }
 
     @GetMapping("/fetch/{id}")
-    Car getCar(@PathVariable int id) {
-        return carService.getCar(id);
+    public ResponseEntity<Car> getCar(@PathVariable int id) {
+        Car car = carService.getCar(id);
+        return ResponseEntity.ok(car);
     }
 
     @PostMapping("/takeOrder")
-    AllProductResponse processOrder(@RequestBody AllProductRequest allProductRequest) {
-        return productService.processOrder(allProductRequest);
+    public ResponseEntity<AllProductResponse> processOrder(@RequestBody AllProductRequest allProductRequest) {
+        AllProductResponse response = productService.processOrder(allProductRequest);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/addProduct")
-    Products addProduct(@RequestBody Products products) {
-        return productService.addProduct(products);
+    public ResponseEntity<Products> addProduct(@RequestBody Products products) {
+        Products savedProduct = productService.addProduct(products);
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
 }
