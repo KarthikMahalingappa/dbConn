@@ -1,5 +1,6 @@
 package com.firstapp.dbconn.dto;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class OrderRequest {
 //    public void setAllProducts(List<OrderItemRequest> allProducts) {
 //        this.allProducts = allProducts;
 //    }
-
+@Valid
     List<OrderItemRequest> allProducts;
 
 }

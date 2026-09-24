@@ -16,4 +16,5 @@ public class Products {
     int price;
     String name;
     int expday;
+    int quantity;
 }

@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponse {
-    List<OrderItemResponse> itemsresponse;
-    int totalBill;
+public class ExceptionResponse {
+    int status;
+    String error;
+    String message;
 }
