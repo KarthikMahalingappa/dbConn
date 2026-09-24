@@ -7,12 +7,21 @@ import jakarta.persistence.Id;
 public class Products {
     @Id
     int id;
-
     int price;
+    String name;
+    int expday;
 
-    Products(){
+    Products() {
 
     }
+
+    public Products(int id, int price, String name, int expday) {
+        this.id = id;
+        this.price = price;
+        this.name = name;
+        this.expday = expday;
+    }
+
     public int getId() {
         return id;
     }
@@ -44,15 +53,4 @@ public class Products {
     public void setExpday(int expday) {
         this.expday = expday;
     }
-
-    public Products(int id, int price, String name, int expday) {
-        this.id = id;
-        this.price = price;
-        this.name = name;
-        this.expday = expday;
-    }
-
-    String name;
-
-    int expday;
 }

@@ -5,18 +5,21 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Car {
-
     @Id
     int id;
-
     String name;
-
     int model;
-
     String parent;
 
-    Car(){
+    Car() {
 
+    }
+
+    public Car(int id, String name, int model, String parent) {
+        this.id = id;
+        this.name = name;
+        this.model = model;
+        this.parent = parent;
     }
 
     public int getId() {
@@ -45,13 +48,6 @@ public class Car {
 
     public String getParent() {
         return parent;
-    }
-
-    public Car(int id, String name, int model, String parent) {
-        this.id = id;
-        this.name = name;
-        this.model = model;
-        this.parent = parent;
     }
 
     public void setParent(String parent) {

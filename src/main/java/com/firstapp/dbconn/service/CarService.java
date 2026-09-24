@@ -9,17 +9,15 @@ import java.util.Optional;
 
 @Service
 public class CarService {
-
     @Autowired
     CarRepo carRepo;
 
-    public Car addCar(Car car){
+    public Car addCar(Car car) {
         return carRepo.save(car);
     }
 
     public Car getCar(int id) {
         carRepo.deleteById(id);
-
         return null;
     }
 }
