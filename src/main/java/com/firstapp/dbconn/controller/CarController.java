@@ -6,7 +6,8 @@ import com.firstapp.dbconn.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -14,6 +15,9 @@ public class CarController {
 
     @Autowired
     CarService carService;
+
+    @Autowired
+    ProductService productService;
 
     @PostMapping("/add")
     Car addCar(@RequestBody Car car){
@@ -26,22 +30,28 @@ public class CarController {
     }
 
     @PostMapping("/takeOrder")
-    Response processOrder(@RequestBody AllProductRequest allProductRequest){
-
-                for(ProductRequest pr:allProductRequest.getAllProducts()) {
-                    System.out.println("productid:"+pr.getProductId());
-                    System.out.println("Quantity:"+pr.getQuantity());
-                }
-
-        return null;
+    ProductsBillResponse processOrder(@RequestBody ProductsBillRequest productsBillRequest){
+        return productService.takeOrder(productsBillRequest);
     }
 
-    @Autowired
-    ProductService productService;
+
+    @GetMapping("/product/{id}")
+    Products getProduct(@PathVariable int id){
+        return productService.getProduct(id);
+    }
 
     @PostMapping("/addProduct")
     Products addProduct(@RequestBody Products products){
         return productService.addProduct(products);
     }
 
+    @PutMapping("/updateProduct/{id}")
+    Products updProduct(@PathVariable int id, @RequestBody Products prod){
+        return productService.updProduct(id, prod);
+    }
+
+    @DeleteMapping("/deleteProduct/{id}")
+    String dltProduct(@PathVariable int id){
+        return productService.deleteProduct(id);
+    }
 }
