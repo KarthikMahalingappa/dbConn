@@ -1,21 +1,17 @@
 package com.firstapp.dbconn.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Products {
-    @Id
+public class ProductItemResponse {
     int id;
-
     String name;
     int price;
     int expday;
     int quantity;
+    int total;
 }
