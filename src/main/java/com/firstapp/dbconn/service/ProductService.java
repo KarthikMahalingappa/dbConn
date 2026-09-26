@@ -1,6 +1,8 @@
 package com.firstapp.dbconn.service;
 
 import com.firstapp.dbconn.dto.*;
+import com.firstapp.dbconn.exception.InSufficientQuantityException;
+import com.firstapp.dbconn.exception.ProductNotFoundException;
 import com.firstapp.dbconn.repository.ProductsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,14 +24,14 @@ public class ProductService {
     public Products getProduct(int id){
 
         Optional<Products> p = repo.findById(id);
-        if(p.isPresent()){
-            return p.get();
+        if(p.isEmpty()){
+            throw new ProductNotFoundException("Product id:" + id + " is not Available");
         }
-        return null;
+        return p.get();
     }
 
     public Products updProduct(int id, Products prod){
-        Products existing = repo.findById(id).orElseThrow(() -> new RuntimeException("error"));
+        Products existing = repo.findById(id).orElseThrow(() -> new ProductNotFoundException("Product id:" + id + " is not Available"));
         existing.setName(prod.getName());
         existing.setPrice(prod.getPrice());
         existing.setQuantity(prod.getQuantity());
@@ -39,6 +41,7 @@ public class ProductService {
     }
 
     public String deleteProduct(int id) {
+        Products product = repo.findById(id).orElseThrow(()-> new ProductNotFoundException("Product id:"+id+" is not found"));
         repo.deleteById(id);
         return "Product id:" + id + " is deleted Successsfully";
     }
@@ -47,9 +50,9 @@ public class ProductService {
         List<ProductItemResponse> list = new ArrayList<>();
         int billAmount = 0;
         for(ProductItemRequest prod: productRequest.getAllProducts()){
-            Products product = repo.findById(prod.getProductId()).orElseThrow(() -> new RuntimeException("error"));
+            Products product = repo.findById(prod.getProductId()).orElseThrow(() -> new ProductNotFoundException("Product id:" + prod.getProductId() + " is not Available"));
             if(prod.getQuantity() > product.getQuantity()){
-                throw new RuntimeException("Error low Quantity is Available");
+                throw new InSufficientQuantityException("There is no such Quantity exist, Available stock:" + product.getQuantity());
             }
             int total = product.getPrice() * prod.getQuantity();
             ProductItemResponse pr = new ProductItemResponse(product.getId(),product.getName(), product.getPrice(), product.getExpday(), prod.getQuantity(), total);
